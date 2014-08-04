@@ -4,6 +4,7 @@
 from flask import Flask
 from flask import render_template
 from flask_rum.main import rum
+from app.views import views
 
 app = Flask(__name__)
 
