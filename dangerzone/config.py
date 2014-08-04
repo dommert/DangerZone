@@ -2,7 +2,7 @@
 
 class Configuration(object):
     DATABASE = {
-        'name': 'dangerZOne.db',
+        'name': 'dangerzone.db',
         'engine': 'peewee.SqliteDatabase',
         'check_same_thread': False,
     }

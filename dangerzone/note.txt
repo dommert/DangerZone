@@ -1,0 +1,31 @@
+from flask import Flask
+from flask_turboduck.auth import Auth
+from flask_turboduck.db import Database
+from flask_turboduck.admin import Admin
+
+app = Flask(__name__)
+app.config.from_object('config.Configuration')
+db = Database(app)
+auth = Auth(app,db)
+admin = Admin(app,auth)
+
+if __name__ == '__main__':
+    # Admin
+    admin.register(User)
+    admin.register_panel('User', UserPanel)
+    # Auth
+    auth.User.create_table(fail_silently=True)
+    # Tables
+    User.create_table(fail_silently=True)
+    Movie.create_table(fail_silently=True)
+    Person.create_table(fail_silently=True)
+    Cast.create_table(fail_silently=True)
+
+==========================
+
+@app.route('/')
+def homepage():
+    if auth.get_logged_in_user():
+        return private_timeline()
+    else:
+        return public_timeline()

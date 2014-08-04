@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content_title %}Movies{% endblock %}
+
+{% block rum_content %}
+  <ul>
+    {% for person in user_list %}
+      <li><a href="{{ url_for('movie', movie=Movie.title) }}">{{ Movie.title }}</a></li>
+    {% endfor %}
+  </ul>
+
+{% endblock %}

@@ -3,15 +3,18 @@
 
 import datetime
 from flask import request, redirect
-
+# TurboDuck
 from flask_turboduck.admin import Admin, ModelAdmin, AdminPanel
 from flask_turboduck.filters import QueryFilter
-
+# DangerZone
 from app import app, db
-from auth import auth
-from models import User, Movie, Person, Cast
+import auth
+from models import Movie, Person, Cast, User
 
 
+# ------- Panels ------------
+
+# Movie Panel
 class MoviePanel(AdminPanel):
     template_name = 'admin/movie.html'
 
@@ -34,26 +37,33 @@ class MoviePanel(AdminPanel):
 
     def get_context(self):
         return {
-            'movie_list': Movie.select().order_by(Movie.created_date.desc()).paginate(1, 3)
+            'movie_list': Movie.select().order_by(Movie.created.desc()).paginate(1, 3)
         }
-
 
 admin = Admin(app, auth, branding='DangerZone')
 
+# --------- Admin --------------
 
+# Person Admin
+class PersonAdmin(ModelAdmin):
+    columns = ('fname', 'lname', 'sex',)
+    exclude = ('created',)
+
+
+# Movie Admin
 class MovieAdmin(ModelAdmin):
     columns = ('title', 'description', 'release', 'poster')
     exclude = ('created',)
 
-class MessageAdmin(ModelAdmin):
-    columns = ('user', 'content', 'pub_date',)
-    foreign_key_lookups = {'user': 'username'}
-    filter_fields = ('user', 'content', 'pub_date', 'user__username')
 
 
-auth.register_admin(admin)
-admin.register(Relationship)
-admin.register(Message, MessageAdmin)
-admin.register(Note, NoteAdmin)
-admin.register_panel('Notes', NotePanel)
-admin.register_panel('User stats', UserStatsPanel)
+#auth.register_admin(admin)
+# Register Admin
+admin.register(Movie, MovieAdmin)
+admin.register(Person, PersonAdmin)
+admin.register(Cast)
+#admin.register(User)
+
+# Register AdminPanels
+admin.register_panel('Movie', MoviePanel)
+

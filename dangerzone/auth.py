@@ -1,12 +1,9 @@
 # DangerZone Version 0.0.1
 # Auth.py
 
-from flask_turboduck.admin import Admin
+from flask_turboduck.auth import Auth
 
-admin = Admin(app, auth)
-# Register Admin Sections
-admin.register(Movie) # Movies Class
-admin.register(Person) # People Class
-admin.register(Cast) # Cast
+from app import app, db
+from models import User
 
-admin.setup()
+auth = Auth(app, db, user_model=User)
