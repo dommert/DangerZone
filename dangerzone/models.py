@@ -3,6 +3,8 @@ from hashlib import md5
 import datetime
 from peewee import *
 from flask_turboduck.auth import Auth, BaseUser
+from flask_turboduck import *
+from peewee import *
 import config
 from app import db
 

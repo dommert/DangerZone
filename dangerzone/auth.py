@@ -2,7 +2,7 @@
 # Auth.py
 
 from flask_turboduck.auth import Auth
-
+from flask_turboduck.db import Database
 from app import app, db
 from models import User
 

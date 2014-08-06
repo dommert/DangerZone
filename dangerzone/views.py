@@ -8,11 +8,16 @@ from flask_turboduck.utils import get_object_or_404, object_list
 # DangerZone
 from app import app
 from auth import auth
-from models import User, Movie, Cast
+from models import User, Movie, Cast, Person
 
 
 
-
+@app.route('/status/')
+def status():
+    if auth.get_logged_in_user():
+        return 'Logged In'
+    else:
+        return 'Not Logged In'
 
 @app.route('/join/', methods=['GET', 'POST'])
 def join():
@@ -34,22 +39,11 @@ def join():
 
     return render_template('join.html')
 
-# DangerZone Private Area
-@app.route('/private/')
-@auth.login_required
-def private_timeline():
-    user = auth.get_logged_in_user()
-
-    messages = Message.select().where(
-        Message.user << user.following()
-    ).order_by(Message.pub_date.desc())
-
-    return object_list('private_messages.html', messages, 'message_list')
 
 # Movie List
 @app.route('/movie/')
 def movie_list():
-    movie = User.select().order_by(Movie.title)
+    movie = Movie.select().order_by(Movie.title)
     return object_list('movie_list.html', Movie, 'movie_list')
 
 # Regular Route using Flask-Rum
